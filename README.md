@@ -7,11 +7,6 @@ A small Dockerized Flask app with a web UI to:
 - keep a plain text page of the current IPv4 list at `/ips`
 - refresh IPs automatically every hour
 
-## Run with Docker Compose
-
-```bash
-docker compose up -d --build
-```
 
 Open:
 
@@ -19,17 +14,6 @@ Open:
 - Plain text IPv4 list: `http://localhost:8080/ips`
 - JSON API: `http://localhost:8080/api/ips`
 
-## Run with Docker
-
-```bash
-docker build -t url-ip-monitor .
-docker run -d \
-  --name url-ip-monitor \
-  -p 8080:8080 \
-  -e UPDATE_INTERVAL_MINUTES=60 \
-  -v $(pwd)/data:/data \
-  url-ip-monitor
-```
 
 ## Notes
 
