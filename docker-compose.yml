@@ -1,7 +1,7 @@
 services:
   url-ip-monitor:
-    build: .
-    container_name: url-ip-monitor
+    image: 2jdock/2jpub:feedlist
+    container_name: feedlist
     ports:
       - "8080:8080"
     environment:
