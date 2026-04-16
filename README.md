@@ -14,6 +14,20 @@ Open:
 - Plain text IPv4 list: `http://localhost:8080/ips`
 - JSON API: `http://localhost:8080/api/ips`
 
+## Run with Docker
+
+services:
+  url-ip-monitor:
+    image: 2jdock/2jpub:feedlist
+    container_name: feedlist
+    ports:
+      - "8080:8080"
+    environment:
+      UPDATE_INTERVAL_MINUTES: 60
+      DB_PATH: /data/data.db
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
 
 ## Notes
 
