@@ -1,6 +1,6 @@
 services:
   url-ip-monitor:
-    image: 2jdock/2jpub:feedlist
+    build: .
     container_name: feedlist
     ports:
       - "8080:8080"
@@ -10,3 +10,4 @@ services:
     volumes:
       - ./data:/data
     restart: unless-stopped
+
