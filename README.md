@@ -15,7 +15,7 @@ Open:
 - JSON API: `http://localhost:8080/api/ips`
 
 ## Run with Docker
-
+'
 services:
   url-ip-monitor:
     image: 2jdock/2jpub:feedlist
@@ -28,7 +28,7 @@ services:
     volumes:
       - ./data:/data
     restart: unless-stopped
-
+'
 ## Notes
 
 - The app stores URLs and resolved IPs in SQLite at `/data/data.db`.
