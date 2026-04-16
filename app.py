@@ -87,7 +87,9 @@ def normalize_url(raw_url: str) -> tuple[str, str]:
 def resolve_hostname(hostname: str) -> list[str]:
     ip_set = set()
     try:
-        for family, _type, _proto, _canonname, sockaddr in socket.getaddrinfo(hostname, None, family=socket.AF_INET):
+        for family, _type, _proto, _canonname, sockaddr in socket.getaddrinfo(
+            hostname, None, family=socket.AF_INET
+        ):
             if family == socket.AF_INET:
                 ip_set.add(sockaddr[0])
     except socket.gaierror:
@@ -200,11 +202,9 @@ def list_ips():
         """
     ).fetchall()
     ips = [row["ip_address"] for row in rows]
-    body = "
-".join(ips)
+    body = "\n".join(ips)
     if body:
-        body += "
-"
+        body += "\n"
     return Response(body, mimetype="text/plain")
 
 
@@ -232,7 +232,13 @@ def api_ips():
 
 def start_scheduler():
     scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(update_all_ips, "interval", minutes=UPDATE_INTERVAL_MINUTES, id="refresh_ips", replace_existing=True)
+    scheduler.add_job(
+        update_all_ips,
+        "interval",
+        minutes=UPDATE_INTERVAL_MINUTES,
+        id="refresh_ips",
+        replace_existing=True,
+    )
     scheduler.start()
     return scheduler
 
