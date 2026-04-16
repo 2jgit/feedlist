@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>URL IP Monitor</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; background: #f6f8fb; color: #222; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .card { background: white; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+    h1, h2 { margin-top: 0; }
+    form.inline { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    input[type="text"] { flex: 1; min-width: 280px; padding: 0.75rem; border: 1px solid #cfd7e3; border-radius: 8px; }
+    button { padding: 0.75rem 1rem; border: 0; border-radius: 8px; cursor: pointer; }
+    .primary { background: #2563eb; color: white; }
+    .danger { background: #dc2626; color: white; }
+    .secondary { background: #475569; color: white; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+    .muted { color: #64748b; font-size: 0.95rem; }
+    .error { color: #b91c1c; font-weight: bold; }
+    code { background: #eef2ff; padding: 0.15rem 0.35rem; border-radius: 6px; }
+    a { color: #2563eb; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>URL IP Monitor</h1>
+      <p class="muted">Add URLs, resolve their hostnames to IPv4 addresses, and refresh the list every {{ interval }} minutes.</p>
+      {% if error %}<p class="error">{{ error }}</p>{% endif %}
+      <form class="inline" method="post" action="/add">
+        <input type="text" name="url" placeholder="https://example.com" required>
+        <button class="primary" type="submit">Add URL</button>
+      </form>
+      <form style="margin-top: 0.75rem;" method="post" action="/refresh">
+        <button class="secondary" type="submit">Refresh now</button>
+      </form>
+      <p class="muted" style="margin-top: 0.75rem;">Plain text IPv4 list: <a href="/ips">/ips</a> | JSON: <a href="/api/ips">/api/ips</a></p>
+    </div>
+
+    <div class="card">
+      <h2>Tracked URLs</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>URL</th>
+            <th>Hostname</th>
+            <th>Resolved IPv4s</th>
+            <th>Last Updated</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td><a href="{{ item['url'] }}" target="_blank" rel="noreferrer">{{ item['url'] }}</a></td>
+            <td><code>{{ item['hostname'] }}</code></td>
+            <td>{{ item['ip_list'] or 'No IPv4 addresses resolved' }}</td>
+            <td>{{ item['updated_at'] }}</td>
+            <td>
+              <form method="post" action="/delete/{{ item['id'] }}" onsubmit="return confirm('Delete this URL?');">
+                <button class="danger" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5" class="muted">No URLs added yet.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
